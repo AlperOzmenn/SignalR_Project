@@ -1,3 +1,5 @@
+using SignalR_Project.Core.Entities;
+
 namespace SignalR_Project.MVC
 {
     public class Program
@@ -8,6 +10,9 @@ namespace SignalR_Project.MVC
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddSignalR();
+
 
             var app = builder.Build();
 
@@ -25,7 +30,8 @@ namespace SignalR_Project.MVC
             app.UseAuthorization();
 
             app.MapStaticAssets();
-            app.MapControllerRoute(
+
+          app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();

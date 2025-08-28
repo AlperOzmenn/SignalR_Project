@@ -1,7 +1,6 @@
-﻿
-namespace SignalR_Project.Core.Commons
+﻿namespace SignalR_Project.Core.Commons
 {
-    public interface IBase
+    public interface IBaseEntity
     {
         Guid Id { get; set; }
         DateTime CreatedDate { get; set; }
