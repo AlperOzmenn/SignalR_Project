@@ -1,8 +1,8 @@
 ﻿@model SignalR_Project.Application.VMs.RegisterVM
 
 @{
-    ViewData["Title"] = "Kayıt Ol";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Kayıt Ol";
 }
 
 @section Styles {
@@ -22,9 +22,15 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="LastName"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+                <label asp-for="Surname"></label>
+                <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
 
             <div class="form-group">

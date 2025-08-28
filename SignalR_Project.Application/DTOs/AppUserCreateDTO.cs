@@ -1,9 +1,9 @@
 ﻿using SignalR_Project.Core.Enum;
 using System.ComponentModel.DataAnnotations;
 
-namespace SignalR_Project.Application.VMs
+namespace SignalR_Project.Application.DTOs
 {
-    public class RegisterVM
+    public class AppUserCreateDTO
     {
         [Required(ErrorMessage = "İsim boş geçilemez!")]
         [Display(Name = "İsim: ")]

@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SignalR_Project.Application\SignalR_Project.Application.csproj" />
     <ProjectReference Include="..\SignalR_Project.Core\SignalR_Project.Core.csproj" />
+    <ProjectReference Include="..\SignalR_Project.Infrastructure\SignalR_Project.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

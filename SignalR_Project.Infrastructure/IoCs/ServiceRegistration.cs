@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SignalR_Project.Application.Mapping;
 
 namespace SignalR_Project.Infrastructure.IoCs
 {
@@ -6,7 +7,7 @@ namespace SignalR_Project.Infrastructure.IoCs
     {
         public static void AddPersistenceServices(this IServiceCollection services)
         {
-            
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
         }
     }
 }
