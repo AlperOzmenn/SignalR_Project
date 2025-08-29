@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SignalR_Project.Core.Entities;
 using SignalR_Project.Infrastructure.Contexts;
 using SignalR_Project.Infrastructure.IoCs;
+using SignalR_Project.MVC.Hubs;
 
 namespace SignalR_Project.MVC
 {
@@ -38,6 +39,9 @@ namespace SignalR_Project.MVC
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
+            // SignalR
+            builder.Services.AddSignalR();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -48,6 +52,9 @@ namespace SignalR_Project.MVC
                 app.UseHsts();
             }
 
+            // SignalR
+            app.MapHub<ChatHub>("/chathub");
+
             app.UseHttpsRedirection();
             app.UseRouting();
 
@@ -56,11 +63,11 @@ namespace SignalR_Project.MVC
 
             app.MapStaticAssets();
 
-          app.MapControllerRoute(
+            app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
-
+            
             app.Run();
         }
     }

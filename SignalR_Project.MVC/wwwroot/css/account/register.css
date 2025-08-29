@@ -3,6 +3,13 @@ body {
     font-family: 'Segoe UI', sans-serif;
     background-color: #f4f4f4;
     padding: 40px 0;
+
+    /* Arka plan ekleme */
+    background-image: url('/images/background/background1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .register-container {
