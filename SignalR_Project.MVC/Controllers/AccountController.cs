@@ -58,5 +58,53 @@ namespace SignalR_Project.MVC.Controllers
             return View(model);  // model ile dön ki form verileri kalsın ve validasyonlar gözüksün
         }
 
+        // Giriş Yap (GET) 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // Giriş Yap (POST) 
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginVM model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = await _userManager.FindByNameAsync(model.UserName);
+
+            if (user is null)
+            {
+                ModelState.AddModelError(string.Empty, "Kullanıcı adı veya parola yanlış!");
+                return View(model);
+            }
+
+            //if (user.IsDeleted)
+            //{
+            //    // Soft delete edilmiş kullanıcıyı uyarı sayfasına gönder
+            //    return RedirectToAction(nameof(Suspended));
+            //}
+
+            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, "Kullanıcı adı veya parola yanlış!");
+                return View(model);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        // Çıkış Yap
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }
