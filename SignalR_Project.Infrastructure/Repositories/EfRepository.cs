@@ -10,10 +10,10 @@ namespace SignalR_Project.Infrastructure.Repositories
         private readonly AppDbContext _context;
         protected readonly DbSet<T> _dbSet;
 
-        public EfRepository(AppDbContext context, DbSet<T> dbSet)
+        public EfRepository(AppDbContext context)
         {
             _context = context;
-            _dbSet = dbSet;
+            _dbSet = _context.Set<T>();
         }
 
         public void Add(T item)
