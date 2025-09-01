@@ -10,7 +10,9 @@ namespace SignalR_Project.Core.Entities
         public Guid ToUser { get; set; }
 
         //Navigation properties
-        public Guid UserId { get; set; } = default!;
-        public AppUser AppUser { get; set; }
+        public virtual Guid AppUserId { get; set; } = default!;
+        public virtual AppUser AppUser { get; set; }
+        public virtual Guid RoomId { get; set; } = default!;
+        public virtual Room Room { get; set; }
     }
 }
