@@ -73,30 +73,22 @@ namespace SignalR_Project.MVC.Controllers
                 }
 
                 var appUsers = await _unitOfWork.GetRepository<AppUser>().GetFilteredListAsync(
-                    select: p => new ProductListDTO
+                    select: x => new AppUser
                     {
-                        Id = p.Id,
-                        Name = p.Name,
-                        UnitPrice = p.UnitPrice,
-                        CategoryName = p.Category.Name,
-                        Brand = p.Brand,
-                        Discount = p.Discount,
-                        FinalPrice = p.FinalPrice,
-                        ImagePath = p.ImageUrl,
-                        Stock = p.Stock,
-                        Description = p.Description,
+                        Id = x.Id,
+                        UserName = x.UserName,
+                        Rooms = x.Rooms
                     },
-                    where: p => p.CategoryId == id && !p.IsDeleted,
-                    join: p => p.Include(x => x.Category)
+                    where : x => x.Rooms.Any(r => r.Id == id)
                 );
 
-                if (!products.Any())
+                if (!appUsers.Any())
                 {
-                    TempData["Info"] = "Bu kategoriye ait ürün bulunamadı!";
+                    TempData["Info"] = "Bu odayada kullanıcı bulunamadı!";
                 }
 
-                return View(products);
-            }, errorMessage: "Ürünler yüklenirken hata oluştu!");
+                return View(appUsers);
+            }, errorMessage: "Kullanıcılar yüklenirken hata oluştu!");
         }
 
 
