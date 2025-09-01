@@ -1,1 +1,54 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Chat Page";
+}
+
+<h1>Sohbet</h1>
+
+<form id="frmMessage">
+    <input id="txtMessage" type="text" placeholder="Mesajınızı giriniz..." required />
+    <button type="submit">Gönder</button>
+</form>
+
+<ul id="ulMessages"></ul>
+
+@section Scripts{
+    <script>
+        const frmMessage = document.getElementById("frmMessage");
+        const txtMessage = document.getElementById("txtMessage");
+        const ulMessages = document.getElementById("ulMessages");
+
+        // signalR bağlantının sağlanması
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .build();
+
+        frmMessage.onsubmit = function (event){
+            event.preventDefault();
+
+            // sunucuya gönder
+            connection.invoke("SendMessage", txtMessage.value)
+                .catch(function (err) {
+                    console.log(err);
+                })
+
+            txtMessage.value = "";
+        }
+
+        // sunucudan gelen mesaj
+        connection.on("ReceiveMessage", function(user, message) {
+            const li = document.createElement("li");
+            li.textContent = `${user}: ${message}`;
+            ulMessages.append(li);
+            // ulMessages.prepend(li);
+        })
+
+        // bağlantıyı başlat
+        connection.start()
+            .then(function () {
+                console.log("Bağlantı başarılı")
+            })
+            .catch(function(err) {
+                console.log(err);
+            })
+    </script>
+}
