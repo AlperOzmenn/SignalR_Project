@@ -15,7 +15,7 @@ namespace SignalR_Project.Infrastructure.Contexts
 
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<UserMessage> UserMessages { get; set; }
-        public DbSet<ChatRoom> ChatRooms { get; set; }
+        public DbSet<Room> ChatRooms { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

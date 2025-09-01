@@ -1,6 +1,6 @@
 ﻿namespace SignalR_Project.Application.DTOs
 {
-    public class ChatRoomDTO
+    public class RoomDTO
     {
         public Guid Id { get; set; }
         public string RoomName { get; set; }
