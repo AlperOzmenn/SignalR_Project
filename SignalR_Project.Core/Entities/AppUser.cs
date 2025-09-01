@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SignalR_Project.Core.Commons;
 using SignalR_Project.Core.Enum;
-using System.Data;
 using System.Text.RegularExpressions;
 
 namespace SignalR_Project.Core.Entities

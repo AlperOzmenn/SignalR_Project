@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SignalR_Project.Core.Commons;
+﻿using SignalR_Project.Core.Commons;
 
 namespace SignalR_Project.Core.Entities
 {

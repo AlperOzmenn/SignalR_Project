@@ -1,7 +1,12 @@
-﻿namespace SignalR_Project.Core.UnitOfWorks
+﻿using SignalR_Project.Core.Commons;
+using SignalR_Project.Core.Interfaces;
+
+namespace SignalR_Project.Core.UnitOfWorks
 {
     public interface IUnitOfWork
     {
-
+        IRepository<T> GetRepository<T>() where T : class, IBaseEntity;
+        Task<int> SaveChangesAsync();
+        int SaveChanges();
     }
 }
