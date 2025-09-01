@@ -57,9 +57,15 @@ namespace SignalR_Project.Core.Entities
             }
         }
 
-        public string? Image { get; set; } = "/images/userProfile/defaut-profile.png";
-
         public GenderEnum? Gender { get; set; } = GenderEnum.Undefined;
+
+
+        //Navigation properties
+        public virtual ICollection<UserMessage> UserMessages { get; set; } = new HashSet<UserMessage>();
+        public virtual ICollection<Room> Rooms { get; set; } = new HashSet<Room>();
+
+
+
 
         // IBaseEntity'den gelenler
         Guid IBaseEntity.Id { get; set; }

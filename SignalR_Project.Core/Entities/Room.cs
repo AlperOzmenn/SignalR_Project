@@ -10,9 +10,8 @@ namespace SignalR_Project.Core.Entities
         public string? Password { get; set; }
 
         //Navigation properties
-        public Guid UserId { get; set; } = default!;
-        public AppUser AppUser { get; set; }
-        public ICollection<UserMessage> UserMessages { get; set; }
-        public UserMessage UserMessage { get; set; }
+        public virtual ICollection<AppUser> AppUsers { get; set; } = new HashSet<AppUser>();
+        public virtual ICollection<UserMessage> UserMessages { get; set; } = new HashSet<UserMessage>();
+
     }
 }
