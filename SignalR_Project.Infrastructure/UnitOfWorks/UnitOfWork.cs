@@ -30,7 +30,7 @@ namespace SignalR_Project.Infrastructure.UnitOfWorks
                 throw new Exception("Değişiklikler işlenemdi");
         }
 
-        IRepository<T> IUnitOfWork.GetRepository<T>() where T : class, IBaseEntity
+        IRepository<T> IUnitOfWork.GetRepository<T>()
         {
             return new EfRepository<T>(_context);
         }
