@@ -6,8 +6,7 @@ namespace SignalR_Project.Core.Entities
     public class UserMessage : BaseEntity
     {
         public string Text { get; set; } = string.Empty;
-        public MessageStatus MessageStatus { get; set; }
-        public Guid ToUser { get; set; }
+        //public MessageStatus MessageStatus { get; set; }
 
         //Navigation properties
         public virtual Guid AppUserId { get; set; } = default!;

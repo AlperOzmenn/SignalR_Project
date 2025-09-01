@@ -94,7 +94,7 @@ namespace SignalR_Project.MVC.Controllers
                 return View(model);
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Room");
         }
 
 

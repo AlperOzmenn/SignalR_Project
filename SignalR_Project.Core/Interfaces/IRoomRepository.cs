@@ -2,7 +2,7 @@
 
 namespace SignalR_Project.Core.Interfaces
 {
-    public interface IChatRoomRepository : IRepository<Room>
+    public interface IRoomRepository : IRepository<Room>
     {
     }
 }

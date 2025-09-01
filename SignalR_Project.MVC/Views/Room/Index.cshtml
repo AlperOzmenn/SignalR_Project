@@ -1,0 +1,85 @@
+﻿@model IEnumerable<SignalR_Project.Core.Entities.Room>
+
+@{
+    ViewData["Title"] = "Oda Listesi";
+}
+
+<h1>Oda Listesi</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Yeni Oda Oluştur</a>
+</p>
+
+<style>
+    body {
+        background-color: #2c2f33;
+        color: #ffffff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .room-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .room-card {
+        background-color: #36393f;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        padding: 12px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background 0.3s;
+    }
+
+        .room-card:hover {
+            background-color: #4f545c;
+        }
+
+    .room-info {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+        .room-info span {
+            font-size: 0.9rem;
+            color: #b9bbbe;
+        }
+
+    .join-btn {
+        background-color: #7289da;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: background 0.3s;
+    }
+
+        .join-btn:hover {
+            background-color: #5b6eae;
+        }
+
+    h1 {
+        color: #ffffff;
+    }
+</style>
+
+<div class="room-table">
+    @foreach (var item in Model)
+    {
+        <div class="room-card">
+            <div class="room-info">
+                <span><strong>Oda Adı:</strong> @item.RoomName</span>
+                <span><strong>Kişi Sayısı:</strong> @item.NumberOfPeople</span>
+                <span><strong>Gizli Oda:</strong> @item.IsPrivate</span>
+            </div>
+            <div>
+                <a asp-controller="Chat" asp-action="Create" asp-route-roomId="@item.Id" class="join-btn">Odaya Katıl</a>
+            </div>
+        </div>
+    }
+</div>

@@ -8,9 +8,9 @@ namespace SignalR_Project.Infrastructure.Concrates.Services
 {
     public class GenericService<T> : IGenericService<T> where T : IBaseEntity, new()
     {
-        private readonly IRepository<T> _repository;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        protected readonly IRepository<T> _repository;
+        protected readonly IUnitOfWork _unitOfWork;
+        protected readonly IMapper _mapper;
 
         public GenericService(IRepository<T> repository, IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -75,7 +75,6 @@ namespace SignalR_Project.Infrastructure.Concrates.Services
 
             if (entity is null)
                 throw new Exception("Güncellenecek veri bulunamadı!");
-
 
             _mapper.Map(model, entity);
             entity.Update();

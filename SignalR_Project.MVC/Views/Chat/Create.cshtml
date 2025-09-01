@@ -1,0 +1,150 @@
+﻿ @{
+    ViewData["Title"] = "Chat Page";
+}
+
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card chat-card shadow-sm">
+                <div class="card-header">
+                    <h4 class="mb-0">Sohbet Odası</h4>
+                </div>
+                <div class="card-body chat-body d-flex flex-column">
+                    <ul id="ulMessages" class="list-group chat-messages flex-grow-1 mb-3"></ul>
+
+                    <form id="frmMessage" class="d-flex gap-2 mt-auto">
+                        <input id="txtMessage" type="text" placeholder="Mesajınızı giriniz..." class="form-control" required />
+                        <button type="submit" class="btn btn-primary">Gönder</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #2c2f33;
+        color: #ffffff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .card-header {
+        background-color: #6f42c1;
+        color: #ffffff;
+    }
+
+    .chat-card {
+        background-color: #36393f;
+        border-radius: 8px;
+        height: 70vh; 
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .chat-messages {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+        overflow-y: auto;
+    }
+
+    .chat-messages li {
+        background-color: #4f545c;
+        color: #ffffff;
+        margin-bottom: 8px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        word-break: break-word;
+        transition: background 0.3s;
+    }
+
+    .chat-messages li:hover {
+        background-color: #5b6eae;
+    }
+
+    .form-control {
+        background-color: #2c2f33;
+        color: #ffffff;
+        border: 1px solid #4f545c;
+        border-radius: 5px;
+    }
+
+    .form-control:focus {
+        border-color: #7289da;
+        box-shadow: 0 0 0 0.2rem rgba(114, 137, 218, 0.25);
+        background-color: #2c2f33;
+        color: #ffffff;
+    }
+
+    .form-control::placeholder {
+        color: #ffffff;
+        opacity: 0.7;
+    }
+
+    .btn-primary {
+        background-color: #7289da;
+        border-color: #7289da;
+    }
+
+    .btn-primary:hover {
+        background-color: #5b6eae;
+        border-color: #5b6eae;
+    }
+</style>
+
+@section Scripts {
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script>
+        const frmMessage = document.getElementById("frmMessage");
+        const txtMessage = document.getElementById("txtMessage");
+        const ulMessages = document.getElementById("ulMessages");
+
+        // SignalR bağlantısı
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .build();
+
+        // Form gönderildiğinde
+        frmMessage.onsubmit = function (event){
+            event.preventDefault();
+
+            // Sunucuya mesajı gönder
+            connection.invoke("SendMessage", txtMessage.value)
+                .catch(function (err) {
+                    console.error(err.toString());
+                });
+
+            txtMessage.value = "";
+        }
+
+        // Sunucudan mesaj geldiğinde
+        connection.on("ReceiveMessage", function(user, message) {
+            const li = document.createElement("li");
+            li.textContent = `${user}: ${message}`;
+            ulMessages.appendChild(li);
+
+            // Scroll en alta kaydır
+            ulMessages.scrollTop = ulMessages.scrollHeight;
+        });
+
+        // Bağlantıyı başlat
+        connection.start()
+            .then(function () {
+                console.log("SignalR bağlantısı başarılı!");
+            })
+            .catch(function(err) {
+                console.error(err.toString());
+            });
+    </script>
+}
+
+
+

@@ -15,6 +15,10 @@ namespace SignalR_Project.Application.Mapping
             CreateMap<AppUser, LoginVM>().ReverseMap();
             CreateMap<Room, RoomDTO>().ReverseMap();
 
+            CreateMap<UserMessageDTO, UserMessage>()
+                .ForMember(dest => dest.AppUser, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate));
+
         }
     }
 }

@@ -22,6 +22,21 @@ namespace SignalR_Project.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AppUserRoom", b =>
+                {
+                    b.Property<Guid>("AppUsersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoomsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AppUsersId", "RoomsId");
+
+                    b.HasIndex("RoomsId");
+
+                    b.ToTable("AppUserRoom");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
                     b.Property<Guid>("Id")
@@ -182,9 +197,6 @@ namespace SignalR_Project.Infrastructure.Migrations
                     b.Property<int?>("Gender")
                         .HasColumnType("int");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -245,13 +257,10 @@ namespace SignalR_Project.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("SignalR_Project.Core.Entities.ChatRoom", b =>
+            modelBuilder.Entity("SignalR_Project.Core.Entities.Room", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
@@ -260,8 +269,14 @@ namespace SignalR_Project.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("bit");
+
                     b.Property<string>("NumberOfPeople")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoomName")
@@ -271,12 +286,7 @@ namespace SignalR_Project.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("ChatRooms");
                 });
@@ -290,33 +300,44 @@ namespace SignalR_Project.Infrastructure.Migrations
                     b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ChatStatus")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("RoomId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ToUser")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
+                    b.HasIndex("RoomId");
+
                     b.ToTable("UserMessages");
+                });
+
+            modelBuilder.Entity("AppUserRoom", b =>
+                {
+                    b.HasOne("SignalR_Project.Core.Entities.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("AppUsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SignalR_Project.Core.Entities.Room", null)
+                        .WithMany()
+                        .HasForeignKey("RoomsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -370,26 +391,33 @@ namespace SignalR_Project.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SignalR_Project.Core.Entities.ChatRoom", b =>
-                {
-                    b.HasOne("SignalR_Project.Core.Entities.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("SignalR_Project.Core.Entities.UserMessage", b =>
                 {
                     b.HasOne("SignalR_Project.Core.Entities.AppUser", "AppUser")
-                        .WithMany()
+                        .WithMany("UserMessages")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SignalR_Project.Core.Entities.Room", "Room")
+                        .WithMany("UserMessages")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("AppUser");
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("SignalR_Project.Core.Entities.AppUser", b =>
+                {
+                    b.Navigation("UserMessages");
+                });
+
+            modelBuilder.Entity("SignalR_Project.Core.Entities.Room", b =>
+                {
+                    b.Navigation("UserMessages");
                 });
 #pragma warning restore 612, 618
         }

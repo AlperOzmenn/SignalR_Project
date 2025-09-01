@@ -129,13 +129,13 @@ input.form-control:focus {
 }
 
 .login-footer a {
-    color: #7a4fff;
+    color: #ffffff;
     text-decoration: none;
     font-weight: 600;
     transition: color 0.2s ease;
 }
 
 .login-footer a:hover {
-    color: #613bd1;
+    color: #ffffff;
     text-decoration: underline;
 }

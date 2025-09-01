@@ -4,9 +4,9 @@ using SignalR_Project.Infrastructure.Contexts;
 
 namespace SignalR_Project.Infrastructure.Repositories
 {
-    public class ChatRoomRepository : EfRepository<Room>, IRoomRepository
+    public class RoomRepository : EfRepository<Room>, IRoomRepository
     {
-        public ChatRoomRepository(AppDbContext context) : base(context)
+        public RoomRepository(AppDbContext context) : base(context)
         {
         }
     }

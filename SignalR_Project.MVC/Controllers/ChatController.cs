@@ -1,59 +1,63 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SignalR_Project.Application.DTOs;
+using SignalR_Project.Application.Interfaces;
 using SignalR_Project.Core.Entities;
-using SignalR_Project.Infrastructure.Concrates.Services;
 using System.Security.Claims;
 
 namespace SignalR_Project.MVC.Controllers
 {
     public class ChatController : BaseController
     {
-        private readonly UserMessageService _userMessageService;
+        private readonly IUserMessageService _userMessageService;
         private readonly IMapper _mapper;
 
-        public ChatController(UserMessageService userMessageService, IMapper mapper)
+        public ChatController(IUserMessageService userMessageService, IMapper mapper)
         {
             _userMessageService = userMessageService;
             _mapper = mapper;
         }
 
-        // ✅ Giriş yapan kullanıcının Guid tipindeki ID'sini al
         private Guid GetCurrentUserId()
         {
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
             if (Guid.TryParse(userIdStr, out Guid userId))
                 return userId;
 
             throw new UnauthorizedAccessException("Kullanıcı ID'si alınamadı.");
         }
 
-
         public IActionResult Index()
         {
             return View();
         }
-        // Mesaj Kaydetme GET
+
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(Guid roomId)
         {
-            return View();
+            var model = new UserMessageDTO
+            {
+                RoomId = roomId
+            };
+            return View(model);
         }
 
-        // Mesaj Kaydetme POST
         [HttpPost]
-        public async Task<IActionResult> Create(UserMessage model)
+        public async Task<IActionResult> Create(UserMessageDTO model, Guid roomId)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return View(model);
 
             try
             {
                 model.AppUserId = GetCurrentUserId();
+                model.RoomId = roomId;
 
-                await _userMessageService.AddAsync(model);
+                UserMessage entity = _mapper.Map<UserMessage>(model);
+                await _userMessageService.AddAsync(entity);
+
                 TempData["Success"] = "Mesajlar başarıyla kaydedildi";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Room), new { roomId });
             }
             catch (Exception ex)
             {
