@@ -1,5 +1,4 @@
-﻿
-namespace SignalR_Project.Core.Commons
+﻿namespace SignalR_Project.Core.Commons
 {
     public abstract class BaseEntity : IBaseEntity
     {
