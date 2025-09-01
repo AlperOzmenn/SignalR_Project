@@ -2,7 +2,7 @@
 
 namespace SignalR_Project.Application.Interfaces
 {
-    public interface IRoomService : IGenericService<Room>
+    public interface IUserMessageService : IGenericService<UserMessage>
     {
     }
 }

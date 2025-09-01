@@ -6,9 +6,9 @@ using SignalR_Project.Core.UnitOfWorks;
 
 namespace SignalR_Project.Infrastructure.Concrates.Services
 {
-    public class RoomService : GenericService<Room>, IRoomService
+    public class UserMessageService : GenericService<UserMessage>, IUserMessageService
     {
-        public RoomService(IRepository<Room> repository, IUnitOfWork unitOfWork, IMapper mapper) : base(repository, unitOfWork, mapper)
+        public UserMessageService(IRepository<UserMessage> repository, IUnitOfWork unitOfWork, IMapper mapper) : base(repository, unitOfWork, mapper)
         {
         }
     }

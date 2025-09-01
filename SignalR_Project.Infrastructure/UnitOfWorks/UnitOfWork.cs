@@ -10,6 +10,8 @@ namespace SignalR_Project.Infrastructure.UnitOfWorks
     {
         private readonly AppDbContext _context;
 
+        public IAppUserRepository AppUserRepository { get; }
+
         public int SaveChanges()
         {
             var result = _context.SaveChanges();

@@ -24,5 +24,9 @@
                 UpdatedDate = DateTime.Now;
             }
         }
+        public void Update()
+        {
+            UpdatedDate = DateTime.Now;
+        }
     }
 }

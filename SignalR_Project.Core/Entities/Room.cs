@@ -2,7 +2,7 @@
 
 namespace SignalR_Project.Core.Entities
 {
-    public class ChatRoom : BaseEntity
+    public class Room : BaseEntity
     {
         public string RoomName { get; set; }
         public string NumberOfPeople { get; set; }

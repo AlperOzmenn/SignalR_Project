@@ -8,5 +8,6 @@
         bool IsDeleted { get; set; }
         void SoftDelete();
         void Restore();
+        void Update();
     }
 }
