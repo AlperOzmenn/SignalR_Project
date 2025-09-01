@@ -4,7 +4,7 @@ using SignalR_Project.MVC.Models;
 
 namespace SignalR_Project.MVC.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 

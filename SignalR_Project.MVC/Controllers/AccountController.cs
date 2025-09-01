@@ -6,7 +6,7 @@ using SignalR_Project.Core.Entities;
 
 namespace SignalR_Project.MVC.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
