@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using SignalR_Project.Core.Commons;
 using SignalR_Project.Core.Interfaces;
 using SignalR_Project.Infrastructure.Contexts;
@@ -53,6 +55,22 @@ namespace SignalR_Project.Infrastructure.Repositories
                 return await _dbSet.IgnoreQueryFilters().FirstOrDefaultAsync(x => x.Id == id);
 
             return await _dbSet.FindAsync(id); 
+        }
+
+        public async Task<IEnumerable<TResult>> GetFilteredListAsync<TResult>(Expression<Func<T, TResult>> select, Expression<Func<T, bool>> where = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> join = null)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (join != null)
+                query = join(query);
+
+            if (where != null)
+                query = query.Where(where);
+
+            if (orderBy != null)
+                return await orderBy(query).Select(select).ToListAsync();
+            else
+                return await query.Select(select).ToListAsync();
         }
     }
 }
