@@ -1,28 +1,34 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+namespace SignalR_Project.MVC.Hubs;
 
-namespace SignalR_Project.MVC.Hubs
+public class ChatHub : Hub
 {
-    public class ChatHub : Hub
+    private static readonly Dictionary<string, List<string>> RoomUsers = new();
+
+    // Odaya katıl
+    public async Task JoinRoom(string roomId)
     {
-        public async Task SendMessage(string message)
-        {
-            var userName = Context.User.Identity.Name;
+        await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
 
-            await Clients.All.SendAsync("ReceiveMessage", userName, message);
-        }
+        var username = Context.User.Identity?.Name ?? "Anonim"; // Direkt username alıyoruz
+        if (!RoomUsers.ContainsKey(roomId))
+            RoomUsers[roomId] = new List<string>();
 
-        //public async Task SendMessage(string userName, string message, string roomId)
-        //{
-        //    var createdDate = DateTime.Now;
+        if (!RoomUsers[roomId].Contains(username))
+            RoomUsers[roomId].Add(username);
 
-        //    // Mesajı sadece o odadaki kullanıcılara gönder
-        //    await Clients.Group(roomId).SendAsync("ReceiveMessage", userName, message, roomId, createdDate);
-        //}
+        await Clients.Group(roomId).SendAsync("UpdateUserList", RoomUsers[roomId]);
+        await Clients.Group(roomId).SendAsync("UserJoined", $"{username} odaya katıldı.");
+    }
 
-        public async Task JoinRoom(string roomId)
-        {
-            await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
-        }
+    // Mesaj gönder
+    public async Task SendMessage(string roomId, string message)
+    {
+        var username = Context.User.Identity?.Name ?? "Anonim";
+        var time = DateTime.Now.ToString("HH:mm");
 
+        await Clients.Group(roomId).SendAsync("ReceiveMessage", username, message, time);
+
+        // İstersen DB kaydı buraya eklenebilir
     }
 }

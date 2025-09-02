@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using SignalR_Project.Application.DTOs;
 using SignalR_Project.Application.Interfaces;
 using SignalR_Project.Core.Entities;
 using SignalR_Project.Core.Interfaces;
@@ -14,18 +13,15 @@ namespace SignalR_Project.Infrastructure.Concrates.Services
         {
         }
 
-        public async Task<IEnumerable<UserMessageDTO>> GetFilteredMessagesByRoomAsync(Guid roomId)
+        public async Task<IEnumerable<UserMessage>> GetMessagesByRoomIdAsync(Guid roomId)
         {
-            var messages = await _unitOfWork.GetRepository<UserMessage>()
+            return await _unitOfWork.GetRepository<UserMessage>()
                 .GetFilteredListAsync(
-                    select: m => m, // tüm entity'yi al
-                    where: m => m.RoomId == roomId && !m.IsDeleted,
-                    orderBy: q => q.OrderBy(x => x.CreatedDate),
+                    select: m => m, // tüm entity'yi almak için
+                    where: m => m.RoomId == roomId,
+                    orderBy: q => q.OrderBy(m => m.CreatedDate),
                     join: q => q.Include(x => x.AppUser)
                 );
-
-            // AutoMapper ile entity → DTO
-            return _mapper.Map<IEnumerable<UserMessageDTO>>(messages);
         }
     }
 }
