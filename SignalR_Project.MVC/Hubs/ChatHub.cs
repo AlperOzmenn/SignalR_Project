@@ -10,7 +10,7 @@ public class ChatHub : Hub
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
 
-        var username = Context.User.Identity?.Name ?? "Anonim"; // Direkt username alıyoruz
+        var username = Context.User.Identity?.Name ?? "Anonim";
         if (!RoomUsers.ContainsKey(roomId))
             RoomUsers[roomId] = new List<string>();
 
@@ -28,7 +28,5 @@ public class ChatHub : Hub
         var time = DateTime.Now.ToString("HH:mm");
 
         await Clients.Group(roomId).SendAsync("ReceiveMessage", username, message, time);
-
-        // İstersen DB kaydı buraya eklenebilir
     }
 }
