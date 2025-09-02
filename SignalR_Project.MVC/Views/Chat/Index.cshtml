@@ -75,6 +75,7 @@
             ulMessages.scrollTop = ulMessages.scrollHeight;
         });
 
+        // Kullanıcı listesi güncellenir
         connection.on("UpdateUserList", function (users) {
             ulUsers.innerHTML = "";
             users.forEach(u => {
@@ -85,10 +86,17 @@
             });
         });
 
+        // Kullancı odaya katılır
         connection.start().then(function () {
             connection.invoke("JoinRoom", roomId)
                 .catch(err => console.error(err.toString()));
         }).catch(err => console.error(err.toString()));
+
+        // Kullanıcı odadan çıkar
+        window.addEventListener("beforeunload", function () {
+            connection.invoke("LeaveRoom", roomId)
+                .catch(err => console.error(err.toString()));
+        });
     </script>
 }
 

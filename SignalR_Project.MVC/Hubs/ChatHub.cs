@@ -21,6 +21,20 @@ public class ChatHub : Hub
         await Clients.Group(roomId).SendAsync("UserJoined", $"{username} odaya katıldı.");
     }
 
+    // Odadan ayrıl
+    public async Task LeaveRoom(string roomId)
+    {
+        await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
+
+        var username = Context.User.Identity?.Name ?? "Anonim";
+        if (RoomUsers.ContainsKey(roomId))
+        {
+            RoomUsers[roomId].Remove(username);
+            await Clients.Group(roomId).SendAsync("UpdateUserList", RoomUsers[roomId]);
+            await Clients.Group(roomId).SendAsync("UserLeft", $"{username} odadan ayrıldı.");
+        }
+    }
+
     // Mesaj gönder
     public async Task SendMessage(string roomId, string message)
     {
