@@ -1,9 +1,21 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.SignalR;
+using SignalR_Project.Application.Interfaces;
+using SignalR_Project.Core.UnitOfWorks;
 namespace SignalR_Project.MVC.Hubs;
 
 public class ChatHub : Hub
 {
     private static readonly Dictionary<string, List<string>> RoomUsers = new();
+    private readonly IMapper _mapper;
+    private readonly IUserMessageService _userMessageService;
+
+    public ChatHub(IUserMessageService userMessageService, IMapper mapper)
+    {
+        _userMessageService = userMessageService;
+        _mapper = mapper;
+    }
+
 
     // Odaya katıl
     public async Task JoinRoom(string roomId)
@@ -42,5 +54,17 @@ public class ChatHub : Hub
         var time = DateTime.Now.ToString("HH:mm");
 
         await Clients.Group(roomId).SendAsync("ReceiveMessage", username, message, time);
+
+        var userMessage = _mapper.Map<SignalR_Project.Core.Entities.UserMessage>(new SignalR_Project.Application.DTOs.UserMessageDTO
+        {
+            AppUserId = Guid.Parse(Context.UserIdentifier),
+            RoomId = Guid.Parse(roomId),
+            Text = message,
+            CreatedDate = DateTime.Now
+        });
+
+        await _userMessageService.AddAsync(userMessage);
+
+
     }
 }

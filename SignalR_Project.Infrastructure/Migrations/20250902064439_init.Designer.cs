@@ -12,8 +12,8 @@ using SignalR_Project.Infrastructure.Contexts;
 namespace SignalR_Project.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250901191237_initial")]
-    partial class initial
+    [Migration("20250902064439_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

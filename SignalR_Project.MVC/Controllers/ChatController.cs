@@ -9,22 +9,24 @@ namespace SignalR_Project.MVC.Controllers
     public class ChatController : BaseController
     {
         private readonly IUserMessageService _userMessageService;
+        private readonly IRoomService _roomService;
         private readonly IMapper _mapper;
 
-        public ChatController(IUserMessageService userMessageService, IMapper mapper)
+        public ChatController(IUserMessageService userMessageService, IMapper mapper, IRoomService roomService)
         {
+            _roomService = roomService;
             _userMessageService = userMessageService;
             _mapper = mapper;
         }
 
-        private Guid GetCurrentUserId()
-        {
-            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (Guid.TryParse(userIdStr, out Guid userId))
-                return userId;
+        //private Guid GetCurrentUserId()
+        //{
+        //    var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //    if (Guid.TryParse(userIdStr, out Guid userId))
+        //        return userId;
 
-            throw new UnauthorizedAccessException("Kullanıcı ID'si alınamadı.");
-        }
+        //    throw new UnauthorizedAccessException("Kullanıcı ID'si alınamadı.");
+        //}
 
         // Chat sayfasını aç
         [HttpGet]
@@ -44,7 +46,10 @@ namespace SignalR_Project.MVC.Controllers
                 })
                 .ToList();
 
+            var room = await _roomService.GetByIdAsync(roomId);
+
             ViewData["RoomId"] = roomId;
+            ViewData["RoomName"] = room.RoomName;
             return View(model);
         }
     }
