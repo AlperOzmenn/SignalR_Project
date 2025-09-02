@@ -5,6 +5,6 @@ namespace SignalR_Project.Application.Interfaces
 {
     public interface IUserMessageService : IGenericService<UserMessage>
     {
-        Task<IEnumerable<UserMessageDTO>> GetFilteredMessagesByRoomAsync(Guid roomId);
+        Task<IEnumerable<UserMessage>> GetMessagesByRoomIdAsync(Guid roomId);
     }
 }
