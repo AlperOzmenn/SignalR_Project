@@ -23,5 +23,13 @@ namespace SignalR_Project.Infrastructure.Concrates.Services
                     join: q => q.Include(x => x.AppUser)
                 );
         }
+
+
+
+
+
+
+
+
     }
 }

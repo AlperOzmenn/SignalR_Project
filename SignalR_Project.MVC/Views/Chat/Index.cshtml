@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Chat Odası";
     var roomId = ViewData["RoomId"];
+	var roomName = ViewData["RoomName"];
 }
 
 <div class="container mt-3">
@@ -11,7 +12,7 @@
         <div class="col-md-8">
             <div class="card chat-card shadow-sm">
                 <div class="card-header chat-header">
-                    <h4 class="mb-0">Oda: @roomId</h4>
+                    <h4 class="mb-0">Oda: @roomName</h4>
                 </div>
                 <div class="card-body chat-body d-flex flex-column">
                     <ul id="ulMessages" class="list-group chat-messages flex-grow-1 mb-3">
